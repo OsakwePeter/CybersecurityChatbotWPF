@@ -1,0 +1,191 @@
+<Window x:Class="CybersecurityChatbotWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="🛡️ Cybersecurity Awareness Bot"
+        Height="750" Width="1100"
+        MinHeight="600" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource DarkBackground}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- Left sidebar -->
+            <ColumnDefinition Width="260"/>
+            <!-- Main chat area -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!--  LEFT SIDEBAR                                          -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <Border Grid.Column="0"
+                Background="{StaticResource PanelBackground}"
+                BorderBrush="{StaticResource BorderColor}"
+                BorderThickness="0,0,1,0">
+            <DockPanel>
+
+                <!-- Logo / branding -->
+                <StackPanel DockPanel.Dock="Top" Margin="16,20,16,16">
+                    <TextBlock Text="🛡️ CyberBot"
+                               Foreground="{StaticResource AccentCyan}"
+                               FontSize="22" FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Cybersecurity Awareness Assistant"
+                               Foreground="{StaticResource TextSecondary}"
+                               FontSize="11"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="0,4,0,0"/>
+                    <!-- Thin divider -->
+                    <Border Height="1"
+                            Background="{StaticResource BorderColor}"
+                            Margin="0,14,0,0"/>
+                </StackPanel>
+
+                <!-- ASCII art panel -->
+                <Border DockPanel.Dock="Top"
+                        Background="{StaticResource CardBackground}"
+                        CornerRadius="8"
+                        Margin="12,0,12,12"
+                        Padding="10,8">
+                    <TextBlock x:Name="AsciiArtBlock"
+                               FontFamily="Courier New"
+                               FontSize="6.5"
+                               Foreground="{StaticResource AccentCyan}"
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Center"/>
+                </Border>
+
+                <!-- Topic quick-buttons -->
+                <StackPanel DockPanel.Dock="Top" Margin="12,0,12,0">
+                    <TextBlock Text="QUICK TOPICS"
+                               Foreground="{StaticResource TextSecondary}"
+                               FontSize="10" FontWeight="Bold"
+                               Margin="4,0,0,8"/>
+
+                    <Button Content="🎣  Phishing"         Tag="phishing"          Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="🔐  Passwords"        Tag="password safety"   Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="🌐  Safe Browsing"    Tag="safe browsing"     Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="🦠  Malware"          Tag="malware"           Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="📲  2FA"              Tag="two-factor authentication" Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="📡  Wi-Fi Safety"     Tag="public wi-fi"      Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="💾  Data Backup"      Tag="data backup"       Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="🔏  Privacy"          Tag="privacy"           Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="⚠️  Scams"            Tag="online scams"      Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                    <Button Content="🇿🇦  SA Resources"    Tag="south africa"      Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,0" HorizontalContentAlignment="Left"/>
+                </StackPanel>
+
+                <!-- User info panel at bottom -->
+                <Border DockPanel.Dock="Bottom"
+                        Background="{StaticResource CardBackground}"
+                        CornerRadius="8"
+                        Margin="12,12,12,16"
+                        Padding="12,10">
+                    <StackPanel>
+                        <TextBlock Text="SESSION INFO"
+                                   Foreground="{StaticResource TextSecondary}"
+                                   FontSize="10" FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                        <TextBlock x:Name="UserInfoBlock"
+                                   Foreground="{StaticResource TextPrimary}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock x:Name="MoodBlock"
+                                   Foreground="{StaticResource AccentYellow}"
+                                   FontSize="11"
+                                   Margin="0,4,0,0"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock x:Name="InterestBlock"
+                                   Foreground="{StaticResource AccentCyan}"
+                                   FontSize="11"
+                                   Margin="0,2,0,0"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Fill remaining space -->
+                <Grid/>
+            </DockPanel>
+        </Border>
+
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!--  MAIN CHAT AREA                                        -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <!-- Top bar -->
+                <RowDefinition Height="56"/>
+                <!-- Chat messages -->
+                <RowDefinition Height="*"/>
+                <!-- Input bar -->
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top bar -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource PanelBackground}"
+                    BorderBrush="{StaticResource BorderColor}"
+                    BorderThickness="0,0,0,1">
+                <DockPanel Margin="16,0">
+                    <TextBlock x:Name="TopBarTitle"
+                               Text="🛡️ Cybersecurity Awareness Bot"
+                               Foreground="{StaticResource TextPrimary}"
+                               FontSize="15" FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                    <StackPanel DockPanel.Dock="Right"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="● ONLINE"
+                                   Foreground="{StaticResource AccentGreen}"
+                                   FontSize="11" FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,16,0"/>
+                        <Button Content="Clear Chat"
+                                Style="{StaticResource GhostButton}"
+                                FontSize="11"
+                                Padding="10,4"
+                                Click="ClearChat_Click"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Chat messages scroll area -->
+            <ScrollViewer Grid.Row="1"
+                          x:Name="ChatScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Padding="16,12">
+                <StackPanel x:Name="ChatPanel" Margin="0,0,8,0"/>
+            </ScrollViewer>
+
+            <!-- Input bar -->
+            <Border Grid.Row="2"
+                    Background="{StaticResource PanelBackground}"
+                    BorderBrush="{StaticResource BorderColor}"
+                    BorderThickness="0,1,0,0"
+                    Padding="16,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="InputBox"
+                             Grid.Column="0"
+                             Style="{StaticResource ChatInput}"
+                             Height="44"
+                             KeyDown="InputBox_KeyDown"
+                             TextChanged="InputBox_TextChanged"
+                             VerticalContentAlignment="Center"/>
+
+                    <Button Grid.Column="1"
+                            Content="Send  ➤"
+                            Style="{StaticResource CyberButton}"
+                            Height="44"
+                            Margin="8,0,0,0"
+                            Click="SendButton_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
