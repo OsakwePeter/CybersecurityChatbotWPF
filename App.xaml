@@ -61,28 +61,43 @@
 
         <!-- TextBox style -->
         <Style x:Key="ChatInput" TargetType="TextBox">
-            <Setter Property="Background"       Value="#1C2128"/>
-            <Setter Property="Foreground"       Value="#E6EDF3"/>
-            <Setter Property="CaretBrush"       Value="#00B4D8"/>
-            <Setter Property="BorderBrush"      Value="#30363D"/>
-            <Setter Property="BorderThickness"  Value="1"/>
-            <Setter Property="FontSize"         Value="14"/>
-            <Setter Property="Padding"          Value="12,8"/>
+            <Setter Property="Background"               Value="#1C2128"/>
+            <Setter Property="Foreground"               Value="#E6EDF3"/>
+            <Setter Property="CaretBrush"               Value="#00B4D8"/>
+            <Setter Property="BorderBrush"              Value="#30363D"/>
+            <Setter Property="BorderThickness"          Value="1"/>
+            <Setter Property="FontSize"                 Value="14"/>
+            <!-- Padding goes on the Border, NOT as Margin on the ScrollViewer.
+                 Horizontal 12px keeps text away from the rounded corners.
+                 Vertical  0px — centering is handled by VerticalContentAlignment. -->
+            <Setter Property="Padding"                  Value="12,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}"
+                        <!-- FIX: Padding is on the Border so the content area is
+                             correctly inset before the ScrollViewer is placed.
+                             Previously, Margin on the ScrollViewer caused the text
+                             to render offset and appear clipped at the bottom. -->
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6">
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <!-- VerticalAlignment binds to VerticalContentAlignment="Center"
+                                 so the single text line is always vertically centred.
+                                 ScrollBar visibility Hidden keeps the box clean while
+                                 still allowing the text to scroll horizontally. -->
                             <ScrollViewer x:Name="PART_ContentHost"
-                                          Margin="{TemplateBinding Padding}"
-                                          VerticalAlignment="Center"/>
+                                          Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="BorderBrush" Value="#00B4D8"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#00B4D8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

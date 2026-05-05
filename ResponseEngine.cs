@@ -26,6 +26,15 @@ namespace CybersecurityChatbotWPF
     /// Manages keyword → response mapping, random tip selection,
     /// conversation memory, sentiment detection, and follow-up handling.
     /// </summary>
+    /// <remarks>
+    /// Processing pipeline order in <see cref="GetResponse"/>:
+    ///   1. Sentiment detection  — detects emotional tone, prepends empathetic prefix
+    ///   2. Follow-up detection  — if user says "tell me more", continues last topic
+    ///   3. Interest memory      — stores any expressed topic interest for later recall
+    ///   4. Random-response pool — topics with multiple tips (phishing tip, etc.)
+    ///   5. Main dictionary      — single detailed response per keyword
+    ///   6. Returns null         — caller (MainWindow) shows the fallback message
+    /// </remarks>
     public class ResponseEngine
     {
         // ── Events / Delegates ────────────────────────────────────────────────
@@ -33,9 +42,13 @@ namespace CybersecurityChatbotWPF
         public event SentimentChangedHandler? OnSentimentChanged;
 
         // ── Memory (Part 2 requirement) ───────────────────────────────────────
+        /// <summary>The user's name, set via <see cref="SetUserName"/>.</summary>
         private string _userName       = "there";
-        private string _userInterest   = "";        // remembered topic interest
-        private string _lastTopic      = "";        // for follow-up detection
+        /// <summary>The cybersecurity topic the user expressed interest in.</summary>
+        private string _userInterest   = "";
+        /// <summary>The keyword key of the last matched topic — used for follow-up responses.</summary>
+        private string _lastTopic      = "";
+        /// <summary>The most recently detected sentiment label.</summary>
         private string _currentSentiment = "neutral";
 
         // ── Knowledge base structures ─────────────────────────────────────────
@@ -123,7 +136,7 @@ namespace CybersecurityChatbotWPF
             // ── Step 4: Random-response topics ────────────────────────────────
             foreach (var kvp in _randomResponses)
             {
-                if (lower.Contains(kvp.Key))
+                if (ContainsKeyword(lower, kvp.Key))
                 {
                     _lastTopic = kvp.Key;
                     string pick = kvp.Value[_rng.Next(kvp.Value.Count)];
@@ -134,7 +147,7 @@ namespace CybersecurityChatbotWPF
             // ── Step 5: Main dictionary ────────────────────────────────────────
             foreach (var kvp in _responses)
             {
-                if (lower.Contains(kvp.Key))
+                if (ContainsKeyword(lower, kvp.Key))
                 {
                     _lastTopic = kvp.Key;
                     return Personalise((sentimentPrefix ?? "") + kvp.Value);
@@ -153,6 +166,32 @@ namespace CybersecurityChatbotWPF
                                           ? "cybersecurity" : _userInterest);
 
         /// <summary>
+        /// Word-boundary keyword match — the keyword must begin at a non-letter/digit
+        /// character (or at the very start of the string).
+        ///
+        /// Why this matters:
+        ///   lower.Contains("hi")  matches "hi" inside "p[hi]shing" → wrong response fires.
+        ///   ContainsKeyword checks that the character before the match is NOT a letter,
+        ///   so "phishing" will NOT trigger the "hi" greeting keyword.
+        ///
+        /// Stem keys (e.g. "phish", "brows", "authenticat") are intentional — we only
+        /// check the START boundary, not the end, so stems still match their full words.
+        /// </summary>
+        private static bool ContainsKeyword(string haystack, string needle)
+        {
+            int idx = haystack.IndexOf(needle, StringComparison.OrdinalIgnoreCase);
+            while (idx >= 0)
+            {
+                // Accept match only when it starts at a word boundary
+                bool startOk = idx == 0 || !char.IsLetterOrDigit(haystack[idx - 1]);
+                if (startOk) return true;
+
+                idx = haystack.IndexOf(needle, idx + 1, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Checks if the input contains a sentiment keyword.
         /// When detected: updates internal state, fires the delegate event,
         /// and returns an empathetic prefix to prepend to the main response.
@@ -162,7 +201,7 @@ namespace CybersecurityChatbotWPF
         {
             foreach (var kvp in _sentimentMap)
             {
-                if (lower.Contains(kvp.Key))
+                if (ContainsKeyword(lower, kvp.Key))
                 {
                     var (label, emoji, prefix) = kvp.Value;
 
@@ -186,7 +225,7 @@ namespace CybersecurityChatbotWPF
         /// <summary>
         /// Gets a follow-up response for the last discussed topic.
         /// Pulls from the random-response pool (different tip each time)
-        /// or from the main dictionary for a fresh angle.
+        /// or returns a contextual "did you know" fact for main-dictionary topics.
         /// </summary>
         private string? GetFollowUpResponse(string topic)
         {
@@ -198,9 +237,16 @@ namespace CybersecurityChatbotWPF
                      + list[_rng.Next(list.Count)];
             }
 
-            // Fall back to main dictionary
+            // For main-dictionary topics, build a "did you know" variation
+            // rather than repeating the same response
             if (_responses.ContainsKey(topic))
-                return "Let me add a bit more on that:\n\n" + _responses[topic];
+            {
+                return $"Here's something else worth knowing about {topic}:\n\n"
+                     + $"Did you know that most {topic}-related incidents can be prevented with "
+                     + $"basic awareness and good digital habits? Review the key points and "
+                     + $"consider sharing them with friends or family to help protect them too.\n\n"
+                     + $"Type 'menu' to explore more cybersecurity topics.";
+            }
 
             return null;
         }
@@ -259,14 +305,15 @@ namespace CybersecurityChatbotWPF
                     "Or click a topic in the sidebar!" },
                 { "menu",
                     "📋 Available Topics:\n\n" +
-                    "1. Phishing          6. Social Engineering\n" +
-                    "2. Password Safety   7. Two-Factor Auth (2FA)\n" +
-                    "3. Safe Browsing     8. Public Wi-Fi & VPN\n" +
-                    "4. Malware           9. Data Backup\n" +
-                    "5. Ransomware       10. Privacy\n" +
-                    "                    11. Scams\n" +
-                    "                    12. Software Updates\n" +
-                    "                    13. South Africa Resources\n\n" +
+                    "1. Phishing          8. Public Wi-Fi & VPN\n" +
+                    "2. Password Safety   9. Data Backup\n" +
+                    "3. Safe Browsing    10. Privacy\n" +
+                    "4. Malware          11. Scams\n" +
+                    "5. Ransomware       12. Software Updates\n" +
+                    "6. Social Engineer  13. Identity Theft\n" +
+                    "7. Two-Factor Auth  14. SIM Swap Attacks\n" +
+                    "                   15. South Africa Resources\n\n" +
+                    "Random tips: 'phishing tip', 'password tip', 'malware tip', '2fa tip', 'security tip'\n\n" +
                     "Type any topic name to learn more!" },
 
                 // Core cybersecurity topics
@@ -363,7 +410,34 @@ namespace CybersecurityChatbotWPF
 
                 { "wifi",
                     "📡 Public Wi-Fi is risky! Always use a VPN when connecting to public networks\n" +
-                    "and avoid accessing sensitive accounts like banking." },
+                    "and avoid accessing sensitive accounts like banking or email on shared connections." },
+
+                { "identity theft",
+                    "🪪 IDENTITY THEFT — Protecting Who You Are Online\n\n" +
+                    "Identity theft occurs when someone steals your personal information\n" +
+                    "to impersonate you for financial gain.\n\n" +
+                    "🔎 Warning signs:\n" +
+                    "  • Unexpected bills or account statements\n" +
+                    "  • Unfamiliar accounts on your credit report\n" +
+                    "  • Being denied credit unexpectedly\n\n" +
+                    "🛡️ Prevention:\n" +
+                    "  ✔ Never share your ID number or banking details online\n" +
+                    "  ✔ Use strong unique passwords and enable 2FA\n" +
+                    "  ✔ Check haveibeenpwned.com regularly\n" +
+                    "  ✔ Report identity theft to SAPS and your bank immediately" },
+
+                { "sim swap",
+                    "📱 SIM SWAP ATTACKS — A Growing Threat in South Africa\n\n" +
+                    "A SIM swap attack is when a fraudster convinces your mobile network\n" +
+                    "to transfer your number to a SIM card they control.\n\n" +
+                    "Once they have your number, they can:\n" +
+                    "  • Intercept your SMS OTPs\n" +
+                    "  • Access your banking app\n" +
+                    "  • Reset your email and social media passwords\n\n" +
+                    "🛡️ Protection:\n" +
+                    "  ✔ Use an authenticator app instead of SMS for 2FA\n" +
+                    "  ✔ Add a SIM swap PIN/password with your mobile provider\n" +
+                    "  ✔ If your phone loses signal unexpectedly, call your provider immediately" },
 
                 { "vpn",
                     "🔐 A VPN (Virtual Private Network) encrypts your internet connection\n" +
@@ -509,6 +583,26 @@ namespace CybersecurityChatbotWPF
                         "🌐 Tip: Use Firefox or Brave for improved privacy — both block trackers by default.",
                         "🌐 Tip: Check a website's privacy policy before entering personal details — if there isn't one, leave.",
                         "🌐 Tip: Avoid clicking 'Allow' on browser notification pop-ups from unknown sites — this is how malicious notification spam spreads.",
+                    }
+                },
+                {
+                    "malware tip", new List<string>
+                    {
+                        "🦠 Tip: Keep your antivirus software up to date — new malware variants are released daily and signature databases need to be current.",
+                        "🦠 Tip: Never plug in a USB drive you found or received unexpectedly — attackers deliberately leave infected drives in public places.",
+                        "🦠 Tip: Disable AutoRun/AutoPlay on Windows — this prevents malware from automatically executing when you insert a drive.",
+                        "🦠 Tip: Regularly scan your device even if nothing seems wrong — many malware types are designed to run silently in the background.",
+                        "🦠 Tip: Be cautious of 'free' software downloads — they often bundle adware or spyware. Use official sources only.",
+                    }
+                },
+                {
+                    "2fa tip", new List<string>
+                    {
+                        "📲 Tip: Use an authenticator app (Google Authenticator, Microsoft Authenticator) rather than SMS — SMS codes can be intercepted via SIM swap attacks.",
+                        "📲 Tip: Enable 2FA on your email first — it's the master key to all your other accounts via password reset links.",
+                        "📲 Tip: Store your 2FA backup codes somewhere safe and offline — if you lose your phone, these are your only way back in.",
+                        "📲 Tip: Hardware security keys (like YubiKey) provide the strongest form of 2FA and are immune to phishing attacks.",
+                        "📲 Tip: Even if a site only offers SMS 2FA, enable it — it's still far better than a password alone.",
                     }
                 },
             };

@@ -38,6 +38,9 @@ namespace CybersecurityChatbotWPF
         // Memory storage (Part 2 requirement)
         private readonly List<string>   _conversationTopics = new List<string>();
 
+        /// <summary>Tracks total messages sent this session — displayed in status bar.</summary>
+        private int _messageCount = 0;
+
         // ── Constructor ───────────────────────────────────────────────────────
         public MainWindow()
         {
@@ -157,10 +160,17 @@ namespace CybersecurityChatbotWPF
         private void SendButton_Click(object sender, RoutedEventArgs e)
             => ProcessInput();
 
-        /// <summary>Fires when input text changes — used for real-time placeholder hint.</summary>
+        /// <summary>
+        /// Fires when input text changes.
+        /// Hides the placeholder hint as soon as the user types anything,
+        /// and shows it again when the box is cleared.
+        /// </summary>
         private void InputBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            // Could add character count or real-time suggestions here
+            if (InputPlaceholder != null)
+                InputPlaceholder.Visibility = string.IsNullOrEmpty(InputBox.Text)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -173,6 +183,7 @@ namespace CybersecurityChatbotWPF
         {
             string rawInput = InputBox.Text.Trim();
             InputBox.Clear();
+            if (InputPlaceholder != null) InputPlaceholder.Visibility = Visibility.Visible;
 
             // Rule 1: empty input
             if (string.IsNullOrWhiteSpace(rawInput))
@@ -225,11 +236,13 @@ namespace CybersecurityChatbotWPF
 
             // Track topics for memory recall (Part 2 memory requirement)
             _conversationTopics.Add(rawInput);
+            _messageCount++;
+            UpdateStatusBar();
 
             await AddBotMessageAsync(response);
 
-            // After responding, check if we should surface a memory reference
-            MaybeAddMemoryCallout();
+            // Contextual memory callout — fires when topic matches stored interest
+            MaybeAddMemoryCallout(rawInput);
         }
 
         /// <summary>
@@ -247,21 +260,30 @@ namespace CybersecurityChatbotWPF
         }
 
         /// <summary>
-        /// If the user has expressed an interest (remembered by the engine),
-        /// occasionally surfaces a personalised reminder — simulating memory recall.
+        /// Surfaces a personalised memory reminder when the user's current message
+        /// is related to their stored interest — contextual rather than arbitrary.
         /// Part 2 requirement: memory and recall feature.
         /// </summary>
-        private void MaybeAddMemoryCallout()
+        private void MaybeAddMemoryCallout(string currentInput)
         {
             string interest = _engine.GetUserInterest();
-            if (!string.IsNullOrEmpty(interest) && _conversationTopics.Count > 0
-                && _conversationTopics.Count % 5 == 0)
+            if (string.IsNullOrEmpty(interest)) return;
+
+            // Only fire when the current input actually relates to the stored interest
+            if (currentInput.ToLower().Contains(interest.ToLower()))
             {
                 AddSystemMessage(
                     $"💭 Memory recall: As someone interested in {interest}, " +
                     $"remember to regularly review your settings and stay updated on {interest}-related threats.");
                 UpdateSidebarInfo();
             }
+        }
+
+        /// <summary>Updates the bottom status bar with current session stats.</summary>
+        private void UpdateStatusBar()
+        {
+            StatusBarLeft.Text  = $"🛡️ Session: {(_nameCollected ? _userName : "Not started")}";
+            StatusBarRight.Text = $"Messages: {_messageCount}";
         }
 
         // ── Delegate / Event Handlers ─────────────────────────────────────────
@@ -328,10 +350,13 @@ namespace CybersecurityChatbotWPF
             _nameCollected = false;
             _userName = "";
             _conversationTopics.Clear();
+            _messageCount = 0;
             TopBarTitle.Text = "🛡️ Cybersecurity Awareness Bot";
             UserInfoBlock.Text = "";
             MoodBlock.Text = "";
             InterestBlock.Text = "";
+            StatusBarLeft.Text  = "🛡️ CyberBot ready";
+            StatusBarRight.Text = "Messages: 0";
             ShowWelcomeFlow();
         }
 

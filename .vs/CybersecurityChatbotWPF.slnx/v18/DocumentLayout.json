@@ -1,0 +1,101 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|c:\\users\\meetp\\downloads\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|c:\\users\\meetp\\downloads\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|c:\\users\\meetp\\downloads\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|solutionrelative:chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|c:\\users\\meetp\\downloads\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf\\messagebubblefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|solutionrelative:messagebubblefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|c:\\users\\meetp\\downloads\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf_part2\\cybersecuritychatbotwpf\\responseengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA59EEA2-FCDB-2318-2E48-54BBDC09B92B}|CybersecurityChatbotWPF.csproj|solutionrelative:responseengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MessageBubbleFactory.cs",
+              "DocumentMoniker": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\MessageBubbleFactory.cs",
+              "RelativeDocumentMoniker": "MessageBubbleFactory.cs",
+              "ToolTip": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\MessageBubbleFactory.cs",
+              "RelativeToolTip": "MessageBubbleFactory.cs",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T17:00:13.191Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-10T16:57:35.683Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ResponseEngine.cs",
+              "DocumentMoniker": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\ResponseEngine.cs",
+              "RelativeDocumentMoniker": "ResponseEngine.cs",
+              "ToolTip": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\ResponseEngine.cs",
+              "RelativeToolTip": "ResponseEngine.cs",
+              "ViewState": "AgIAAC8CAAAAAAAAAAAuwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T16:56:31.636Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\App.xaml",
+              "RelativeDocumentMoniker": "App.xaml",
+              "ToolTip": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\App.xaml",
+              "RelativeToolTip": "App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-07T13:49:40.499Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ChatMessage.cs",
+              "DocumentMoniker": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\ChatMessage.cs",
+              "RelativeDocumentMoniker": "ChatMessage.cs",
+              "ToolTip": "C:\\Users\\meetp\\Downloads\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF_Part2\\CybersecurityChatbotWPF\\ChatMessage.cs",
+              "RelativeToolTip": "ChatMessage.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-05T08:34:28.509Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

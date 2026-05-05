@@ -22,9 +22,9 @@
                 Background="{StaticResource PanelBackground}"
                 BorderBrush="{StaticResource BorderColor}"
                 BorderThickness="0,0,1,0">
-            <DockPanel>
+            <DockPanel LastChildFill="True">
 
-                <!-- Logo / branding -->
+                <!-- Logo / branding  (docked top first) -->
                 <StackPanel DockPanel.Dock="Top" Margin="16,20,16,16">
                     <TextBlock Text="🛡️ CyberBot"
                                Foreground="{StaticResource AccentCyan}"
@@ -42,7 +42,7 @@
                             Margin="0,14,0,0"/>
                 </StackPanel>
 
-                <!-- ASCII art panel -->
+                <!-- ASCII art panel  (docked top) -->
                 <Border DockPanel.Dock="Top"
                         Background="{StaticResource CardBackground}"
                         CornerRadius="8"
@@ -50,32 +50,15 @@
                         Padding="10,8">
                     <TextBlock x:Name="AsciiArtBlock"
                                FontFamily="Courier New"
-                               FontSize="6.5"
+                               FontSize="8"
                                Foreground="{StaticResource AccentCyan}"
                                TextWrapping="Wrap"
                                HorizontalAlignment="Center"/>
                 </Border>
 
-                <!-- Topic quick-buttons -->
-                <StackPanel DockPanel.Dock="Top" Margin="12,0,12,0">
-                    <TextBlock Text="QUICK TOPICS"
-                               Foreground="{StaticResource TextSecondary}"
-                               FontSize="10" FontWeight="Bold"
-                               Margin="4,0,0,8"/>
-
-                    <Button Content="🎣  Phishing"         Tag="phishing"          Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="🔐  Passwords"        Tag="password safety"   Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="🌐  Safe Browsing"    Tag="safe browsing"     Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="🦠  Malware"          Tag="malware"           Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="📲  2FA"              Tag="two-factor authentication" Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="📡  Wi-Fi Safety"     Tag="public wi-fi"      Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="💾  Data Backup"      Tag="data backup"       Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="🔏  Privacy"          Tag="privacy"           Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="⚠️  Scams"            Tag="online scams"      Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
-                    <Button Content="🇿🇦  SA Resources"    Tag="south africa"      Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,0" HorizontalContentAlignment="Left"/>
-                </StackPanel>
-
-                <!-- User info panel at bottom -->
+                <!-- FIX: Session info panel declared BEFORE quick-topics so
+                     DockPanel reserves bottom space first, preventing the
+                     panel from being squeezed out when the window is short. -->
                 <Border DockPanel.Dock="Bottom"
                         Background="{StaticResource CardBackground}"
                         CornerRadius="8"
@@ -103,8 +86,29 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Fill remaining space -->
-                <Grid/>
+                <!-- Topic quick-buttons — wrapped in a ScrollViewer so they
+                     never overflow when the window is resized smaller. -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="12,0,12,0">
+                        <TextBlock Text="QUICK TOPICS"
+                                   Foreground="{StaticResource TextSecondary}"
+                                   FontSize="10" FontWeight="Bold"
+                                   Margin="4,0,0,8"/>
+
+                        <Button Content="🎣  Phishing"         Tag="phishing"                  Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="🔐  Passwords"        Tag="password safety"           Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="🌐  Safe Browsing"    Tag="safe browsing"             Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="🦠  Malware"          Tag="malware"                   Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="📲  2FA"              Tag="two-factor authentication" Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="📡  Wi-Fi Safety"     Tag="public wi-fi"              Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="💾  Data Backup"      Tag="data backup"               Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="🔏  Privacy"          Tag="privacy"                   Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="⚠️  Scams"            Tag="online scams"              Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,4" HorizontalContentAlignment="Left"/>
+                        <Button Content="🇿🇦  SA Resources"    Tag="south africa"              Style="{StaticResource GhostButton}" Click="QuickTopic_Click" Margin="0,0,0,0" HorizontalContentAlignment="Left"/>
+                    </StackPanel>
+                </ScrollViewer>
+
             </DockPanel>
         </Border>
 
@@ -113,12 +117,15 @@
         <!-- ══════════════════════════════════════════════════════ -->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <!-- Top bar -->
+                <!-- Row 0: Top bar -->
                 <RowDefinition Height="56"/>
-                <!-- Chat messages -->
+                <!-- Row 1: Chat messages -->
                 <RowDefinition Height="*"/>
-                <!-- Input bar -->
+                <!-- Row 2: Input bar — Auto sizes to the TextBox height + padding,
+                     so nothing is clipped and there is no dead space below. -->
                 <RowDefinition Height="Auto"/>
+                <!-- Row 3: Status bar  (FIX: was missing — caused overlap) -->
+                <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
 
             <!-- Top bar -->
@@ -170,13 +177,27 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="InputBox"
-                             Grid.Column="0"
-                             Style="{StaticResource ChatInput}"
-                             Height="44"
-                             KeyDown="InputBox_KeyDown"
-                             TextChanged="InputBox_TextChanged"
-                             VerticalContentAlignment="Center"/>
+                    <!-- Input TextBox overlaid with a placeholder hint.
+                         The placeholder collapses as soon as the user starts typing. -->
+                    <Grid Grid.Column="0">
+                        <TextBox x:Name="InputBox"
+                                 Style="{StaticResource ChatInput}"
+                                 Height="44"
+                                 KeyDown="InputBox_KeyDown"
+                                 TextChanged="InputBox_TextChanged"
+                                 VerticalContentAlignment="Center"/>
+
+                        <!-- Placeholder hint — sits on top of the TextBox,
+                             IsHitTestVisible="False" so clicks pass through to the TextBox. -->
+                        <TextBlock x:Name="InputPlaceholder"
+                                   Text="Ask me about phishing, passwords, malware…   (Enter to send)"
+                                   Foreground="{StaticResource TextSecondary}"
+                                   FontSize="13"
+                                   IsHitTestVisible="False"
+                                   VerticalAlignment="Center"
+                                   Margin="14,0,0,0"
+                                   Visibility="Visible"/>
+                    </Grid>
 
                     <Button Grid.Column="1"
                             Content="Send  ➤"
@@ -186,6 +207,34 @@
                             Click="SendButton_Click"/>
                 </Grid>
             </Border>
+
+            <!-- Status bar  (FIX: Grid.Row="3", removed wrong Grid.Column="1"
+                 and VerticalAlignment="Bottom" that caused it to overlap
+                 the top bar at Row 0) -->
+            <Border Grid.Row="3"
+                    Background="{StaticResource PanelBackground}"
+                    BorderBrush="{StaticResource BorderColor}"
+                    BorderThickness="0,1,0,0">
+                <Grid Margin="12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="StatusBarLeft"
+                               Grid.Column="0"
+                               Text="🛡️ CyberBot ready"
+                               Foreground="{StaticResource TextSecondary}"
+                               FontSize="10"
+                               VerticalAlignment="Center"/>
+                    <TextBlock x:Name="StatusBarRight"
+                               Grid.Column="1"
+                               Text="Messages: 0"
+                               Foreground="{StaticResource TextSecondary}"
+                               FontSize="10"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
         </Grid>
     </Grid>
 </Window>
