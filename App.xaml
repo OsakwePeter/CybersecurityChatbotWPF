@@ -1,0 +1,99 @@
+<Application x:Class="CybersecurityChatbotWPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Global colour palette -->
+        <SolidColorBrush x:Key="DarkBackground"    Color="#0D1117"/>
+        <SolidColorBrush x:Key="PanelBackground"   Color="#161B22"/>
+        <SolidColorBrush x:Key="CardBackground"    Color="#1C2128"/>
+        <SolidColorBrush x:Key="AccentCyan"        Color="#00B4D8"/>
+        <SolidColorBrush x:Key="AccentGreen"       Color="#3FB950"/>
+        <SolidColorBrush x:Key="AccentYellow"      Color="#F0C000"/>
+        <SolidColorBrush x:Key="AccentRed"         Color="#F85149"/>
+        <SolidColorBrush x:Key="TextPrimary"       Color="#E6EDF3"/>
+        <SolidColorBrush x:Key="TextSecondary"     Color="#8B949E"/>
+        <SolidColorBrush x:Key="BorderColor"       Color="#30363D"/>
+        <SolidColorBrush x:Key="UserBubble"        Color="#1F3A5F"/>
+        <SolidColorBrush x:Key="BotBubble"         Color="#1A2E1A"/>
+
+        <!-- Base button style -->
+        <Style x:Key="CyberButton" TargetType="Button">
+            <Setter Property="Background"   Value="#00B4D8"/>
+            <Setter Property="Foreground"   Value="#0D1117"/>
+            <Setter Property="FontWeight"   Value="Bold"/>
+            <Setter Property="FontSize"     Value="13"/>
+            <Setter Property="Padding"      Value="16,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor"       Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0096C7"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0077B6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Secondary (ghost) button -->
+        <Style x:Key="GhostButton" TargetType="Button" BasedOn="{StaticResource CyberButton}">
+            <Setter Property="Background"   Value="#30363D"/>
+            <Setter Property="Foreground"   Value="#E6EDF3"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3D444D"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TextBox style -->
+        <Style x:Key="ChatInput" TargetType="TextBox">
+            <Setter Property="Background"       Value="#1C2128"/>
+            <Setter Property="Foreground"       Value="#E6EDF3"/>
+            <Setter Property="CaretBrush"       Value="#00B4D8"/>
+            <Setter Property="BorderBrush"      Value="#30363D"/>
+            <Setter Property="BorderThickness"  Value="1"/>
+            <Setter Property="FontSize"         Value="14"/>
+            <Setter Property="Padding"          Value="12,8"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#00B4D8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ScrollBar style (thin, dark) -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background"   Value="#161B22"/>
+            <Setter Property="Width"        Value="6"/>
+        </Style>
+    </Application.Resources>
+</Application>
