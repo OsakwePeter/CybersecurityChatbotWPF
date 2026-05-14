@@ -19,10 +19,10 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore CybersecurityChatbotWPF/CybersecurityChatbotWPF.csproj
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build CybersecurityChatbotWPF/CybersecurityChatbotWPF.csproj --no-restore --configuration Release
+      run: dotnet build --no-restore --configuration Release
 
     - name: Build Summary
       run: echo "✅ Build passed successfully!"
