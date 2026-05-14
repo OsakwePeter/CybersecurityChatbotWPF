@@ -102,15 +102,12 @@ CybersecurityChatbotWPF/
 
 ## 📸 CI Workflow Screenshot
 
-> *(Add your GitHub Actions green check screenshot here)*
-
+> 
 ---
 
 ## 🎥 Video Presentation
 
-> YouTube unlisted link: *(Add your link here)*
-
----
+> YouTube unlisted link: https://youtu.be/I0d5oePawgs---
 
 ## 📚 References
 
