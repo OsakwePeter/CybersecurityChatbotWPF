@@ -101,8 +101,8 @@ CybersecurityChatbotWPF/
 ---
 
 ## 📸 CI Workflow Screenshot
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/a6529a3c-f143-4143-9741-8ffaab21d86f" />
 
-> 
 ---
 
 ## 🎥 Video Presentation
